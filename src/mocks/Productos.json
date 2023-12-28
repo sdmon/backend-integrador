@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "title": "Outer Wilds",
+    "description": "Mobius Digital",
+    "price": 15000,
+    "thumbnail": "img1.jpg",
+    "code": "ABC",
+    "status": true,
+    "stock": 20
+  },
+  {
+    "id": "2",
+    "title": "Red Dead Redemption 2",
+    "description": "Rockstar Games",
+    "price": 70000,
+    "thumbnail": "img2.jpg",
+    "code": "DEF",
+    "status": true,
+    "stock": 20
+  },
+  {
+    "id": "3",
+    "title": "Hollow Knight",
+    "description": "Team Cherry",
+    "price": 8000,
+    "thumbnail": "img3.jpg",
+    "code": "GHI",
+    "status": true,
+    "stock": 15
+  },
+  {
+    "id": "4",
+    "title": "Hades",
+    "description": "Supergiant Games",
+    "price": 10000,
+    "thumbnail": "img4.jpg",
+    "code": "JKL",
+    "status": true,
+    "stock": 25
+  },
+  {
+    "id": "5",
+    "title": "Celeste",
+    "description": "Maddy Makes Games",
+    "price": 5000,
+    "thumbnail": "img1.jpg",
+    "code": "MNO",
+    "status": true,
+    "stock": 10
+  }
+]

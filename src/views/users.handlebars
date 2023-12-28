@@ -1,0 +1,56 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test de Paginacion de Usuarios</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+
+    <div class="container my-5">
+      <h1 class="text-center pb-5">Test de Paginacion de Usuarios</h1>
+
+      <div class="container-flex mx-auto pl-5">
+        {{#each users}}
+          <li>
+            <strong>Nombre: </strong>{{this.first_name}}
+            -
+            <strong>Apellido: </strong>{{this.last_name}}
+            -
+            <strong>Email: </strong>{{this.email}}
+            -
+            <strong>Genero: </strong>{{this.gender}}
+          </li>
+        {{/each}}
+      </div>
+      <br />
+      <div class="text-center">
+        {{#if hasPrevPage}}
+          <a
+            href="/users?numPage={{prevPage}}"
+            class="btn btn-outline-dark"
+          >Pagina Anterior</a>
+        {{/if}}
+        <label>{{page}}</label>
+        {{#if hasNextPage}}
+          <a
+            href="/users?numPage={{nextPage}}"
+            class="btn btn-outline-dark"
+          >Pagina Siguiente</a>
+        {{/if}}
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+    ></script>
+
+  </body>
+</html>

@@ -1,0 +1,82 @@
+GET http://localhost:8080/api/users
+
+###
+
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+
+{
+    "first_name": "Sebastian",
+    "last_name": "Diaz",
+    "email": "sebadiaz@gmail.com"
+}
+
+###
+PUT http://localhost:8080/api/users/658b186568518aad853f40da
+Content-Type: application/json
+
+{
+    "first_name": "Sebastian",
+    "last_name": "Diaz",
+    "email": "sedimon@gmail.com"
+}
+
+###
+GET http://localhost:8080/api/products
+
+###
+POST http://localhost:8080/api/products
+Content-Type: application/json
+
+{    
+    "title": "DEATHLOOP",
+    "description": "Arkane Studios",
+    "price": 52000,
+    "thumbnail": "img32.jpg",
+    "code": "HGF",
+    "status": true,
+    "stock": 10
+}
+
+###
+
+PUT http://localhost:8080/api/products/658b54086617a2b12772b30a
+Content-Type: application/json
+
+{
+    "price": 30000
+}
+
+### // GET para ver los mensajes del chat guardados hasta ahora.
+GET http://localhost:8080/api/chat
+
+### // GET para ver los carritos creados
+GET http://localhost:8080/api/carts/
+
+### // POST para crear un carrito nuevo
+POST http://localhost:8080/api/carts
+
+### // GET para carrito especifico
+GET http://localhost:8080/api/carts/658c5b05ae030e71f1c4a1ec
+
+###
+DELETE http://localhost:8080/api/carts/658dce9e6dcd9bbbcb58c868
+
+### // POST para agregar un producto a un carrito creado
+POST http://localhost:8080/api/carts/658c5c6daf7e8aea5846a86e/product/658b54086617a2b12772b30a
+
+
+### // DELETE para borrar un producto de un carrito existente
+DELETE http://localhost:8080/api/carts/658c5c6daf7e8aea5846a86e/products/658b54086617a2b12772b30a
+
+###
+//PUT http://localhost:8080/api/carts/658c5c6daf7e8aea5846a86e
+
+###
+PUT http://localhost:8080/api/carts/658c5c6daf7e8aea5846a86e/products/658b54086617a2b12772b30a
+Content-Type: application/json
+
+{
+    "quantity": 2
+}

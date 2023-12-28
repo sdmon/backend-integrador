@@ -1,0 +1,29 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carrito</title>
+  </head>
+  <body>
+    <h1>Carrito</h1>
+    <body>
+      <div class="container my-5">
+        <h1 class="text-center pb-5">Carrito de Compras</h1>
+
+        <div class="container-flex mx-auto pl-5">
+          {{#each cartProducts}}
+            <li>
+              <strong>Nombre: </strong>{{this.title}}
+              -
+              <strong>Developer: </strong>{{this.description}}
+              -
+              <strong>Precio: </strong>{{this.price}}
+            </li>
+          {{/each}}
+        </div>
+      </div>
+
+    </body>
+
+  </body>
+</html>
