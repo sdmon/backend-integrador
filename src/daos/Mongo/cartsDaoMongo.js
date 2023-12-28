@@ -49,7 +49,8 @@ class CartsDaoMongo {
 
   async addProdToCart(cid, pid, quantity = 1) {
     try {      
-      this.validateId(pid)      
+      this.validateId(pid)     
+      this.validateId(cid) 
 
       let cart = await this.model.findById(cid)
 
