@@ -57,6 +57,7 @@ router.post("/carts/add", async (req, res) => {
     console.log(req.body)
 
     await cartsModel.addProdToCart(cid, pid, quantity)
+    res.redirect(`/carts/${cid}`)
   } catch (error) {
     console.error("Error al agregar el producto al carrito:", error)
     res.status(500).send("Error al agregar el producto al carrito")

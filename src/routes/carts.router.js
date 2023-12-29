@@ -74,25 +74,25 @@ router
     }
   })
   .delete("/:cid/products/:pid", async (req, res) => {
-  try {
-    const { cid, pid } = req.params
-    
-    const deletedProduct = await cartsService.removeProductFromCart(cid, pid)
+    try {
+      const { cid, pid } = req.params
 
-    console.log("Product deleted from cart:", deletedProduct)
+      const deletedProduct = await cartsService.removeProductFromCart(cid, pid)
 
-    res.send({
-      status: "Exito",
-      message: deletedProduct,
-    })
-  } catch (error) {
-    console.error("Error al eliminar el producto del carrito:", error)
-    res.status(500).send({
-      status: "Error",
-      message: "Error del servidor al eliminar el producto del carrito",
-    })
-  }
-})
+      console.log("Product deleted from cart:", deletedProduct)
+
+      res.send({
+        status: "Exito",
+        message: deletedProduct,
+      })
+    } catch (error) {
+      console.error("Error al eliminar el producto del carrito:", error)
+      res.status(500).send({
+        status: "Error",
+        message: "Error del servidor al eliminar el producto del carrito",
+      })
+    }
+  })
   .put("/:cid", async (req, res) => {
     try {
       const { cid } = req.params
@@ -104,7 +104,7 @@ router
           status: "Error",
           message: "El carrito no existe",
         })
-      }      
+      }
 
       await cartsService.updateCart(cid, products)
       res.send({
@@ -119,12 +119,13 @@ router
       })
     }
   })
-   .put("/:cid/products/:pid", async (req, res) => {
+  .put("/:cid/products/:pid", async (req, res) => {
     try {
       const { cid, pid } = req.params
       const { quantity } = req.body
 
       const cart = await cartsService.getCartById(cid)
+
       if (!cart) {
         return res.status(400).send({
           status: "Error",
@@ -150,32 +151,36 @@ router
       })
     }
   })
-  
-  .post("/:cid/product/:pid", async (req, res) => {
+
+  .put("/:cid/product/:pid", async (req, res) => {
     try {
       const { cid, pid } = req.params
       const { quantity } = req.body
 
       const cart = await cartsService.getCartById(cid)
+
       if (!cart) {
         return res.status(400).send({
           status: "Error",
           message: "El carrito no existe",
         })
       }
-
+      
       if (!(await cartsService.getProduct(pid))) {
         return res.status(400).send({
           status: "Error",
           message: "El producto no existe",
         })
       }
+      
       const result = await cartsService.addProdToCart(
         cid,
         pid,
         parseInt(quantity) || 1
       )
+
       console.log(result)
+
       res.send({
         status: "Exito",
         message: result,
@@ -186,7 +191,7 @@ router
         status: "Error",
         message: "Error del servidor al agregar el producto al carrito",
       })
-    }    
+    }
   })
 
 module.exports = router

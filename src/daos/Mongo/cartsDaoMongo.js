@@ -7,7 +7,7 @@ class CartsDaoMongo {
 
   validateId(id) {
     if (!id || typeof id !== 'string') {
-      throw new Error('Formato invalido');
+      throw new Error('Formato invalido')
     }
   }
 
@@ -47,7 +47,7 @@ class CartsDaoMongo {
     }
   }
 
-  async addProdToCart(cid, pid, quantity = 1) {
+  /*async addProdToCart(cid, pid, quantity = 1) {
     try {      
       this.validateId(pid)     
       this.validateId(cid) 
@@ -55,7 +55,7 @@ class CartsDaoMongo {
       let cart = await this.model.findById(cid)
 
       if (!cart) {
-        cart = await this.model.create({ _id: cid, products: [{ productId: pid, quantity }] })
+        cart = await this.model.create({ _id: cid, products: [{ pid: pid, quantity }] })
         return 'Nuevo carrito creado'
       }
 
@@ -66,11 +66,11 @@ class CartsDaoMongo {
       }
 
       const index = cart.products.findIndex(
-        (product) => product.productId.toString() === pid
+        (product) => product.pid.toString() === pid
       )  
 
       if (index === -1) {
-        cart.products.push({ productId: pid, quantity })
+        cart.products.push({ pid: pid, quantity })
       } else {
         cart.products[index].quantity += quantity
       }
@@ -81,7 +81,43 @@ class CartsDaoMongo {
     } catch (error) {
       console.error('Error al agregar el producto al carrito:', error)      
     }
+  }*/
+  addProdToCart = async (cid, pid, quantity) => {
+    try {
+
+      if (!cid) {
+      const newCart = await this.createCart();
+      cid = newCart._id.toString()      
+    }
+
+    this.validateId(cid);
+    this.validateId(pid);
+
+    console.log("Updating cart with cid:", cid);
+  
+      const result = await cartsModel.updateOne(
+        { _id: cid, "products.productId": pid }, 
+        { $inc: { "products.$.quantity": quantity } }
+      );
+  
+      if (result.acknowledged && result.modifiedCount === 0) {
+        const newProduct = {
+          productId: pid, 
+          quantity: quantity,
+        };
+  
+        const result = await cartsModel.updateOne(
+          { _id: cid },
+          { $push: { products: newProduct } }
+        );
+        return result;
+      }
+      return result;
+    } catch (error) {
+      throw error
+    }
   }
+
   async getCartProducts(cid) {
     try {
       this.validateId(cid)
@@ -91,7 +127,7 @@ class CartsDaoMongo {
         throw new Error('No hay carrito con esa id')
       }
 
-      const ids = cart.products.map(product => product.productId)
+      const ids = cart.products.map(product => product.pid)
       const cartProducts = await prodModel.find({ _id: { $in: ids } })
 
       return cartProducts
@@ -141,7 +177,7 @@ class CartsDaoMongo {
       }
 
       const updatedProducts = cart.products.filter(
-        (product) => product.productId.toString() !== pid
+        (product) => product.pid.toString() !== pid
       )
 
       cart.products = updatedProducts
@@ -166,7 +202,7 @@ class CartsDaoMongo {
       }
 
       const index = cart.products.findIndex(
-        (product) => product.productId.toString() === pid
+        (product) => product.pid.toString() === pid
       )
 
       if (index === -1) {
