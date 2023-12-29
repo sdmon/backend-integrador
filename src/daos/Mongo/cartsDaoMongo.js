@@ -86,33 +86,32 @@ class CartsDaoMongo {
     try {
 
       if (!cid) {
-      const newCart = await this.createCart();
+      const newCart = await this.createCart()
       cid = newCart._id.toString()      
     }
 
-    this.validateId(cid);
-    this.validateId(pid);
-
-    console.log("Updating cart with cid:", cid);
+    this.validateId(cid)
+    this.validateId(pid)
+    
   
       const result = await cartsModel.updateOne(
         { _id: cid, "products.productId": pid }, 
         { $inc: { "products.$.quantity": quantity } }
-      );
+      )
   
       if (result.acknowledged && result.modifiedCount === 0) {
         const newProduct = {
           productId: pid, 
           quantity: quantity,
-        };
+        }
   
         const result = await cartsModel.updateOne(
           { _id: cid },
           { $push: { products: newProduct } }
-        );
-        return result;
+        )
+        return result
       }
-      return result;
+      return result
     } catch (error) {
       throw error
     }
