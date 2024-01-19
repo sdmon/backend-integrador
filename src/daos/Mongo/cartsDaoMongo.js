@@ -1,53 +1,39 @@
-const { cartsModel } = require('./models/carts.model')
-const { prodModel } = require('./models/products.model') 
-class CartsDaoMongo {
+const { cartsModel } = require("./models/carts.model")
+const { prodModel } = require("./models/products.model")
+const mongoose = require('mongoose')
+
+class CartDaoMongo {
   constructor() {
-    this.model = cartsModel
+      this.model = cartsModel
   }
 
   validateId(id) {
     if (!id || typeof id !== 'string') {
       throw new Error('Formato invalido')
     }
-  }
+  } 
 
   async getCarts() {
-    try {
-      return await this.model.find({})
-    } catch (error) {
-      console.error('Error al traer todos carritos: ', error)
-    }
+      return await this.model.find().lean()
   }
-
   async getCartById(cid) {
     try {
-      this.validateId(cid)
-      return await this.model.findById(cid)
+        if (!cid || typeof cid !== 'string' || !mongoose.Types.ObjectId.isValid(cid)) {
+            return 'Invalid cart ID'
+        }
+
+        const cart = await this.model.findById(cid)
+        return cart
     } catch (error) {
-      console.error('Error al obtener carrito por id:', error)      
+        console.log(error)
     }
+}
+
+  async createCart(newCart) {
+      return await this.model.create({ products: [] })
   }
 
-  async getProduct(pid) {
-    try {
-      this.validateId(pid)
-      const product = await prodModel.findById(pid)  
-      return product
-    } catch (error) {
-      console.error('Error al obtener producto por id:', error)      
-    }
-  }
-  async createCart() {
-    try {
-      const cart = await this.model.create({ products: [] })
-      return cart
-    } catch (error) {
-      console.error('Error al crear carrito:', error)
-      throw new Error('Error al crear carrito')
-    }
-  }
-
-  /*async addProdToCart(cid, pid, quantity = 1) {
+  async addProdToCart(cid, pid, quantity = 1) {
     try {      
       this.validateId(pid)     
       this.validateId(cid) 
@@ -81,143 +67,83 @@ class CartsDaoMongo {
     } catch (error) {
       console.error('Error al agregar el producto al carrito:', error)      
     }
-  }*/
-  addProdToCart = async (cid, pid, quantity) => {
-    try {
+  }
 
-      if (!cid) {
-      const newCart = await this.createCart()
-      cid = newCart._id.toString()      
-    }
+  async updateCart(cid, prods) {
+      try {
 
-    this.validateId(cid)
-    this.validateId(pid)
-    
-  
-      const result = await cartsModel.updateOne(
-        { _id: cid, "products.productId": pid }, 
-        { $inc: { "products.$.quantity": quantity } }
-      )
-  
-      if (result.acknowledged && result.modifiedCount === 0) {
-        const newProduct = {
-          productId: pid, 
-          quantity: quantity,
+          const updatedCart = await this.model.updateOne(
+              { _id: cid },
+              { $push :{products: prods} },
+              { new: true }
+          )
+
+          return updatedCart
+
+      } catch (error) {
+          console.log(error)
+      }
+
+  }
+  async updateProductQuantity(cid, pid, quantity) {
+      try {
+          const cart = await this.model.updateOne(
+              {_id:cid,"products._id":pid},
+              {$inc:{"products.$.quantity":quantity}}
+          )
+          return {success:'Producto actualizado con exito!', payload:cart}
+      } catch (error) {
+          console.error(error)
+      }
+  }
+
+  deleteCart = async (cid) => {
+      try {
+          
+          const cart = await this.model.findOne({ _id: cid })
+
+        if (!cart){
+          console.log('no se encontro el carrito')
         }
   
-        const result = await cartsModel.updateOne(
-          { _id: cid },
-          { $push: { products: newProduct } }
-        )
-        return result
+  
+        cart.products = []
+  
+        const updatedCart = await cart.save()
+  
+        return updatedCart
+
+      } catch (error) {
+        console.log(error) 
       }
-      return result
-    } catch (error) {
-      throw error
     }
+  
+  async deleteProduct(cid, pid) {
+      try {
+
+          const cart = await this.model.findOne({ _id: cid })
+
+          if (!cart) {
+              return 'No se encuentra el producto a eliminar'
+          }
+
+          const productIndex = cart.products.findIndex(product => product._id.equals(pid))
+
+          if (productIndex !== -1) {
+              cart.products.splice(productIndex, 1)
+          }
+
+
+          await cart.save()
+          return cart
+
+      } catch (error) {
+          console.log(error)
+      }
   }
 
-  async getCartProducts(cid) {
-    try {
-      this.validateId(cid)
-      const cart = await this.model.findById(cid)
-
-      if (!cart) {
-        throw new Error('No hay carrito con esa id')
-      }
-
-      const ids = cart.products.map(product => product.pid)
-      const cartProducts = await prodModel.find({ _id: { $in: ids } })
-
-      return cartProducts
-    } catch (error) {
-      console.error('Error al obtener productos del carrito:', error)
-    }
-  }
-
-  async updateCart(cid, cartReplace) {
-    try {
-      this.validateId(cid)
-
-      const updatedCart = await this.model.updateOne({ _id: cid }, cartReplace)
-
-      if (updatedCart.nModified === 0) {
-        console.log('No existe ese carrito!')
-      }
-      return updatedCart
-    } catch (error) {
-      console.error('Error al actualizar carrito:', error)      
-    }
-  }
-
-  async deleteCart(cid) {
-    try {
-      this.validateId(cid)
-
-      const deletedCart = await this.model.findByIdAndDelete(cid)
-
-      if (!deletedCart) {
-        throw new Error('Carrito no encontrado!')
-      }
-      return deletedCart
-    } catch (error) {
-      console.error('Error al borrar el carrito! ', error)      
-    }
-  }
-  async removeProductFromCart(cid, pid) {
-    try {
-      this.validateId(cid)
-      this.validateId(pid)
-
-      const cart = await this.model.findById(cid)
-
-      if (!cart) {
-        throw new Error('No hay carrito con esa id')
-      }
-
-      const updatedProducts = cart.products.filter(
-        (product) => product.pid.toString() !== pid
-      )
-
-      cart.products = updatedProducts
-
-      await cart.save()
-
-      return 'Producto eliminado'
-      
-    } catch (error) {
-      console.error('Error al eliminar el producto del carrito:', error)      
-    }
-  }
-  async updateProductQuantity(cid, pid, updquantity) {
-    try {
-      this.validateId(cid)
-      this.validateId(pid)
-
-      const cart = await this.model.findById(cid)
-
-      if (!cart) {
-        console.log("No existe ese carrito")
-      }
-
-      const index = cart.products.findIndex(
-        (product) => product.pid.toString() === pid
-      )
-
-      if (index === -1) {
-        console.log("No existe ese producto")
-      }
-
-      cart.products[index].quantity = updquantity
-
-      await cart.save()
-
-      return 'Producto actualizado'
-
-    } catch (error) {
-      console.error('Error al actualizar:', error)      
-    }
-  }
 }
 
-module.exports = CartsDaoMongo
+module.exports = CartDaoMongo
+
+

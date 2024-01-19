@@ -11,9 +11,9 @@ class UserDaoMongo {
             console.log(Error)
         }
     }
-    async getUser(uid){
+    async getUser(filter){
         try {
-            return await this.model.findOne({_id: uid})
+            return await this.model.findOne(filter)
         } catch (error) {
             console.log(Error)
         }
@@ -22,7 +22,8 @@ class UserDaoMongo {
     async createUser(user){
         try {
             return await this.model.create(user)
-        } catch (error) {
+            
+        } catch (error) {            
             console.log(Error)
         }        
     }

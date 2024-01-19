@@ -1,5 +1,30 @@
-GET http://localhost:8080/api/users
+# Sessions 
 
+POST http://localhost:8080/api/sessions/login
+Content-Type: application/json
+
+{
+    "email": "adminCoder@coder.com",
+    "password": "adminCod3r123"
+}
+###
+POST http://localhost:8080/api/sessions/register
+Content-Type: application/json
+
+{
+    "first_name": "Jose Maria",
+    "last_name": "Listorti",
+    "email": "josema@gmail.com",
+    "password": "josema",
+    "role": "user"   
+}
+
+
+
+### Usuarios
+GET http://localhost:8080/api/sessions/current
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTdlNjQwM2VlMzQ4OTg0ZjkyMTY3YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcwNTYxODA1NiwiZXhwIjoxNzA1NzA0NDU2fQ.UDniExXYEW_kXzKY9jrzkT8T6Q7uDvqC84hpB-aNUew 
 ###
 
 POST http://localhost:8080/api/users
@@ -32,7 +57,7 @@ Content-Type: application/json
 {    
     "title": "DEATHLOOP",
     "description": "Arkane Studios",
-    "price": 52000,
+    "email": 52000,
     "thumbnail": "img32.jpg",
     "code": "HGF",
     "status": true,
@@ -40,7 +65,6 @@ Content-Type: application/json
 }
 
 ###
-
 PUT http://localhost:8080/api/products/658b54086617a2b12772b30a
 Content-Type: application/json
 
@@ -58,10 +82,10 @@ GET http://localhost:8080/api/carts/
 POST http://localhost:8080/api/carts
 
 ### // GET para carrito especifico
-GET http://localhost:8080/api/carts/658c5b05ae030e71f1c4a1ec
+GET http://localhost:8080/api/carts/658f90c4c407c2df25525b13
 
 ###
-DELETE http://localhost:8080/api/carts/658dce9e6dcd9bbbcb58c868
+DELETE http://localhost:8080/api/carts/658f90c4c407c2df25525b13
 
 ### // POST para agregar un producto a un carrito creado
 POST http://localhost:8080/api/carts/658c5c6daf7e8aea5846a86e/product/658b54086617a2b12772b30a
@@ -80,3 +104,4 @@ Content-Type: application/json
 {
     "quantity": 2
 }
+

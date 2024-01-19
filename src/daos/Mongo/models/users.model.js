@@ -7,7 +7,8 @@ const userCollection = 'Usuarios'
 // Schema
 const UsersSchema = Schema({
     first_name: {
-        type: String,        
+        type: String,  
+        index: true,      
         required: true
     },
     last_name: {
@@ -19,9 +20,15 @@ const UsersSchema = Schema({
         required: true,
         unique: true
     },
-    gender:{
+    password:{
         type: String,
         required: true
+    },    
+    role: {
+        type: String,
+        required: true,
+        enum: ['user', 'admin'],    
+        default: 'user',    
     },
     atCreated: {
         type: Date,

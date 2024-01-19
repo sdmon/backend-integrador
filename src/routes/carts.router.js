@@ -22,8 +22,9 @@ router
   })
   .get("/:cid", async (req, res) => {
     try {
-      const { cid } = req.params
-      const cart = await cartsService.getCartById(cid)
+      const cartId = req.params.cid
+
+      const cart = await cartsService.getCartById(cartId)
       if (!cart) {
         return res.status(400).send({
           status: "Error",
@@ -44,10 +45,20 @@ router
   })
   .post("/", async (req, res) => {
     try {
-      await cartsService.createCart()
+      const newCart = req.body
+
+      const result = await cartsService.createCart(newCart)
+      if (!result) {
+        return res
+          .status(400)
+          .send({
+            status: "Error",
+            message: { error: "No se pudo agregar ningun producto" },
+          })
+      }
       res.send({
         status: "Exito",
-        message: "Carrito creado",
+        payload: result,
       })
     } catch (error) {
       console.error("Error al crear el carrito:", error)
@@ -79,11 +90,11 @@ router
 
       const deletedProduct = await cartsService.removeProductFromCart(cid, pid)
 
-      console.log("Product deleted from cart:", deletedProduct)
+      console.log("Producto eliminado del carrito:", deletedProduct)
 
       res.send({
         status: "Exito",
-        message: deletedProduct,
+        payload: deletedProduct,
       })
     } catch (error) {
       console.error("Error al eliminar el producto del carrito:", error)
@@ -106,10 +117,10 @@ router
         })
       }
 
-      await cartsService.updateCart(cid, products)
+      const update = await cartsService.updateCart(cid, products)
       res.send({
         status: "Exito",
-        message: "Carrito actualizado",
+        payload: update,
       })
     } catch (error) {
       console.error("Error al actualizar el carrito:", error)
@@ -141,7 +152,7 @@ router
 
       res.send({
         status: "Exito",
-        message: update,
+        payload: update,
       })
     } catch (error) {
       console.error("Error al actualizar la cantidad ", error)
@@ -151,47 +162,6 @@ router
       })
     }
   })
-
-  .put("/:cid/product/:pid", async (req, res) => {
-    try {
-      const { cid, pid } = req.params
-      const { quantity } = req.body
-
-      const cart = await cartsService.getCartById(cid)
-
-      if (!cart) {
-        return res.status(400).send({
-          status: "Error",
-          message: "El carrito no existe",
-        })
-      }
-      
-      if (!(await cartsService.getProduct(pid))) {
-        return res.status(400).send({
-          status: "Error",
-          message: "El producto no existe",
-        })
-      }
-      
-      const result = await cartsService.addProdToCart(
-        cid,
-        pid,
-        parseInt(quantity) || 1
-      )
-
-      console.log(result)
-
-      res.send({
-        status: "Exito",
-        message: result,
-      })
-    } catch (error) {
-      console.error("Error al agregar el producto al carrito:", error)
-      res.status(500).send({
-        status: "Error",
-        message: "Error del servidor al agregar el producto al carrito",
-      })
-    }
-  })
+  
 
 module.exports = router

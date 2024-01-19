@@ -3,11 +3,20 @@ const router = Router()
 const { usersModel } = require("../daos/Mongo/models/users.model.js")
 const { prodModel } = require("../daos/Mongo/models/products.model.js")
 const CartsDaoMongo = require("../daos/Mongo/cartsDaoMongo")
+const { authentication } = require("../middlewares/auth.middleware.js")
 
 
 const cartsModel = new CartsDaoMongo()
 
-router.get("/users", async (req, res) => {
+router.get('/register', async (req, res) => {
+  res.render('register')
+})
+
+router.get('/login', async (req, res) => {
+  res.render('login')
+})
+
+router.get("/users", authentication, async (req, res) => {
   const { numPage = 1 } = req.query
   const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, page } =
     await usersModel.paginate({}, { limit: 10, page: numPage, lean: true })
@@ -30,6 +39,8 @@ router.get("/products", async (req, res) => {
   // console.log(result)
   res.render("products", {
     products: docs,
+    first_name: req.session.user.first_name,
+    role: req.session.user.role,    
     hasNextPage,
     hasPrevPage,
     prevPage,

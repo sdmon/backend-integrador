@@ -1,0 +1,27 @@
+<section>
+  <h1>Registro de usuario</h1>
+  <form action="/api/sessions/register" method="POST" class="form-group">
+    <input type="text" name="first_name" placeholder="first_name" />
+    <br />
+    <input type="text" name="last_name" placeholder="last_name" />
+    <br />
+    <input type="text" name="email" placeholder="email" />
+    <br />
+    <input type="text" name="password" placeholder="password" />
+    <br />
+    <label>
+      <input type="radio" name="role" value="user" checked />
+      Usuario
+    </label>
+    <label>
+      <input type="radio" name="role" value="admin" />
+      Administrador
+    </label>
+    <br />
+
+    <button>Enviar</button>
+  </form>
+
+  <h2>Si ya tenes un usuario, podes loguearte en este
+    <a href="/login"><strong>link</strong></a></h2>
+</section>
