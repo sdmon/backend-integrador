@@ -57,11 +57,12 @@ app.use(cookieParser('secr3tw0rd'))
 })) */ 
 
 initializePassport()
+
 app.use(session({
   secret: 'secr3tw0rd',
   resave: true,
   saveUninitialized: true
-}))
+})) 
 app.use(passport.initialize())
 
 // Session para la estrategia 2
