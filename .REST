@@ -4,19 +4,23 @@ POST http://localhost:8080/api/sessions/login
 Content-Type: application/json
 
 {
-    "email": "adminCoder@coder.com",
-    "password": "adminCod3r123"
+    "email": "user@gmail.com",
+    "password": "user1"
 }
+###
+
+POST http://localhost:8080/api/sessions/logout
 ###
 POST http://localhost:8080/api/sessions/register
 Content-Type: application/json
 
 {
-    "first_name": "Jose Maria",
-    "last_name": "Listorti",
-    "email": "josema@gmail.com",
-    "password": "josema",
-    "role": "user"   
+    "first_name": "user",
+    "last_name": "user",
+    "email": "user@gmail.com",
+    "password": "user1",
+    "role": "user",
+    "fullname": "user"  
 }
 
 
@@ -32,9 +36,10 @@ Content-Type: application/json
 
 
 {
-    "first_name": "Sebastian",
-    "last_name": "Diaz",
-    "email": "sebadiaz@gmail.com"
+    "first_name": "Marcelo",
+    "last_name": "Delgado",
+    "email": "chelodelgado@gmail.com",
+    "password": "3dedos123",    
 }
 
 ###
@@ -48,29 +53,22 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/api/products
+GET http://localhost:8080/api/products/65d60cb14e345fd719457b2c
 
 ###
 POST http://localhost:8080/api/products
 Content-Type: application/json
 
 {    
-    "title": "DEATHLOOP",
-    "description": "Arkane Studios",
-    "email": 52000,
-    "thumbnail": "img32.jpg",
-    "code": "HGF",
+    "title": "Ender Lilies",
+    "description": "Binary Haze Interactive",
+    "price": 45000,
+    "thumbnail": "img45.jpg",
+    "code": "HHH",
     "status": true,
-    "stock": 10
+    "stock": 20
 }
 
-###
-PUT http://localhost:8080/api/products/658b54086617a2b12772b30a
-Content-Type: application/json
-
-{
-    "price": 30000
-}
 
 ### // GET para ver los mensajes del chat guardados hasta ahora.
 GET http://localhost:8080/api/chat
@@ -82,26 +80,77 @@ GET http://localhost:8080/api/carts/
 POST http://localhost:8080/api/carts
 
 ### // GET para carrito especifico
-GET http://localhost:8080/api/carts/658f90c4c407c2df25525b13
+GET http://localhost:8080/api/carts/65d6139b421be36bbb729e00
 
 ###
-DELETE http://localhost:8080/api/carts/658f90c4c407c2df25525b13
-
-### // POST para agregar un producto a un carrito creado
-POST http://localhost:8080/api/carts/658c5c6daf7e8aea5846a86e/product/658b54086617a2b12772b30a
-
-
-### // DELETE para borrar un producto de un carrito existente
-DELETE http://localhost:8080/api/carts/658c5c6daf7e8aea5846a86e/products/658b54086617a2b12772b30a
+DELETE http://localhost:8080/api/carts/65d613cf421be36bbb729e03
 
 ###
 //PUT http://localhost:8080/api/carts/658c5c6daf7e8aea5846a86e
 
 ###
-PUT http://localhost:8080/api/carts/658c5c6daf7e8aea5846a86e/products/658b54086617a2b12772b30a
+PUT http://localhost:8080/api/carts/65d6139b421be36bbb729e00/products/658dc13153f5b74472dcf90f
 Content-Type: application/json
 
 {
-    "quantity": 2
+    "quantity": 5
 }
+
+###
+PUT http://localhost:8080/api/products/658dbdc6a58ca0a01668ec1c
+Content-Type: application/json
+//Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZDY0YjVlY2FjZDJkNTU4MWQxZDg1OCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcwODU0NTE3OSwiZXhwIjoxNzA4NjMxNTc5fQ.BWZRSV6JODubSOvZdhHvOBhyXOIWPECoLoNsB4vkeyI
+
+{
+    "stock": 50
+}
+
+###
+DELETE http://localhost:8080/api/products/65d60cb14e345fd719457b2c
+
+
+
+///////////////// PRUEBA DE COMPRA
+
+### // GET para ver los carritos creados
+GET http://localhost:8080/api/carts/
+
+### // POST para crear un carrito nuevo
+POST http://localhost:8080/api/carts
+// Id de carrito 65d7ae7b0b5aff44d2cc3bc1
+
+### // GET para ver todos los productos
+GET http://localhost:8080/api/products/
+// Id de producto 65d7ae7b0b5aff44d2cc3bc1
+
+
+### // POST para agregar producto a carrito existente
+POST http://localhost:8080/api/carts/65d7ae7b0b5aff44d2cc3bc1/products/658dbdc6a58ca0a01668ec1c
+
+### // GET para chequear estado del carrito
+GET http://localhost:8080/api/carts/65d7ae7b0b5aff44d2cc3bc1
+
+### // PUT para cambiar la cantidad del producto
+PUT http://localhost:8080/api/carts/65d7495c4d6e2a9e2779479f/products/658dbdc6a58ca0a01668ec1c
+Content-Type: application/json
+
+{
+    "quantity": 9
+}
+### // POST para realizar compra 
+POST http://localhost:8080/api/carts/65d7ae7b0b5aff44d2cc3bc1/purchase
+
+### // GET Para buscar la nueva disponibilidad del producto
+GET http://localhost:8080/api/products/658dbdc6a58ca0a01668ec1c
+
+///////////////////////    PRUEBAS DE TICKETS /////////////////////////////////////
+###
+GET http://localhost:8080/api/tickets
+
+###
+GET http://localhost:8080/api/tickets/65d796ff15c4e3bf75adc0fb
+
+###
+DELETE http://localhost:8080/api/tickets/65d796c3f09f72fdda5cc876
+
 

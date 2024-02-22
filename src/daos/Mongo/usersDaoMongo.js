@@ -4,14 +4,21 @@ class UserDaoMongo {
     constructor(){
         this.model = usersModel
     }
-    async getUsers(){
+    async get(){
         try {
-            return await usersModel.paginate({})
+            return await usersModel.find({})
         } catch (error) {
             console.log(Error)
         }
     }
-    async getUser(filter){
+    async getPaginate(){
+        try {
+            return await usersModel.paginate({ limit, page})
+        } catch (error) {
+            console.log(Error)
+        }
+    }
+    async getBy(filter){
         try {
             return await this.model.findOne(filter)
         } catch (error) {
@@ -19,7 +26,7 @@ class UserDaoMongo {
         }
 
     }
-    async createUser(user){
+    async create(user){
         try {
             return await this.model.create(user)
             
@@ -27,7 +34,7 @@ class UserDaoMongo {
             console.log(Error)
         }        
     }
-    async updateUser(uid, userReplace){
+    async update(uid, userReplace){
         try {
             const userUpdate = await this.model.updateOne({ _id: uid }, userReplace)
             return userUpdate
@@ -36,7 +43,7 @@ class UserDaoMongo {
             throw new Error("Error al actualizar usuario")
           }
     }
-    async deleteUser(uid){
+    async remove(uid){
         try {
             const userDelete = await this.model.deleteOne({ _id: uid })
             return userDelete

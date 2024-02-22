@@ -1,9 +1,11 @@
 const express = require("express")
 const appRouter = require("./routes")
 
-const { connectDb } = require("./config")
+const { connectDb, configObject } = require("./config")
 const handlebars = require("express-handlebars")
 const { Server } = require('socket.io')
+const pruebasRouter = require('./routes/pruebas.router.js')
+const cors = require('cors')
 
 const sessionRouter = require('./routes/sessions.router.js')
 const MessagesDaoMongo = require("./daos/Mongo/messagesDaoMongo.js"
@@ -18,7 +20,7 @@ const { initializePassport } = require('./config/passport.config.js')
 
 
 const app = express()
-const PORT = 8080
+const PORT = configObject.PORT
 
 connectDb()
 
@@ -26,35 +28,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname + "/public"))
 app.use(cookieParser('secr3tw0rd'))
-
-// fileStore para session local
-// const fileStore = new FileStore(session)
-
-//Session mongo
-/*app.use(session({
-  store: MongoStore.create({
-    mongoUrl: 'mongodb+srv://dmsebastian:z4KUCCax9cUWGgg8@cluster0.vy207vv.mongodb.net/backend-sdm?retryWrites=true&w=majority',
-    mongoOptions: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,      
-    },
-    ttl: 15,
-  }),
-  secret: 'secret0',
-  resave: true,
-  saveUninitialized: true
-})) */
-
-// Session local
-/* app.use(session({
-  store: new fileStore({
-    path: './src/sessions',
-    ttl: 100,
-    retire: 0}),
-  secret: 'secret0',
-  resave: true,
-  saveUninitialized: true
-})) */ 
+app.use(cors())
 
 initializePassport()
 
@@ -65,14 +39,11 @@ app.use(session({
 })) 
 app.use(passport.initialize())
 
-// Session para la estrategia 2
-//app.use(passport.session())
-
-
 app.engine("handlebars", handlebars.engine())
 app.set("views", __dirname + "/views")
 app.set("view engine", "handlebars")
 app.use('/api/sessions', sessionRouter) 
+app.use('/api/pruebas', pruebasRouter)
 
 app.use(appRouter)
 

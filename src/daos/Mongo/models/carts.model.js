@@ -17,17 +17,25 @@ const CartSchema = Schema({
       },
     },
   ],
+  state: {
+    type: Boolean,
+    default: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 })
 
-CartSchema.pre('find', function () {
-    this.populate('products.productId')
-})
+CartSchema.pre(['findOneAndUpdate', 'update'], function () {
+  this.populate('products.productId');
+});
 
-const cartsModel = model(cartCollection, CartSchema)
+const cartsModel = model(cartCollection, CartSchema);
+
+module.exports = {
+  cartsModel,
+};
 
 module.exports = {
   cartsModel,

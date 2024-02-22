@@ -16,7 +16,7 @@ class ProductManager {
     }
   }
 
-  getProducts = async () => {
+  get = async () => {
     try {
       return await this.readFile()
     } catch (error) {
@@ -24,7 +24,7 @@ class ProductManager {
     }
   }
 
-  getProduct = async (id) => {
+  getBy = async (filter) => {
     try {
       const products = await this.readFile()
   
@@ -32,7 +32,7 @@ class ProductManager {
         return "No hay productos"
       } 
       const product = products.find((product) => {        
-        return String(product.id) === String(id)
+        return product.id === filter
       })
   
       if (!product) {
@@ -45,7 +45,7 @@ class ProductManager {
     }
   }
 
-  addProduct = async (newProduct) => {
+  create = async (newProduct) => {
     try {
       
       let products = await this.readFile()
@@ -110,7 +110,7 @@ class ProductManager {
     }
   }
 
-  deleteProduct = async (id) => {
+  delete = async (id) => {
     try {
       let products = await this.readFile()
       // Busco el index

@@ -36,7 +36,7 @@ router.get("/products", async (req, res) => {
   const { numPage = 1 } = req.query
   const { docs, hasPrevPage, hasNextPage, prevPage, nextPage, page } =
     await prodModel.paginate({}, { limit: 10, page: numPage, lean: true })
-  // console.log(result)
+  
   res.render("products", {
     products: docs,
     first_name: req.session.user.first_name,
@@ -64,8 +64,7 @@ router.get("/carts/:cid", async (req, res) => {
 })
 router.post("/carts/add", async (req, res) => {
   try {
-    const { cid, pid, quantity = 1 } = req.body
-    console.log(req.body)
+    const { cid, pid, quantity = 1 } = req.body    
 
     await cartsModel.addProdToCart(cid, pid, quantity)
     res.redirect(`/carts/${cid}`)

@@ -42,7 +42,7 @@ exports.initializePassport = () => {
         const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
         let password = ''
     
-        for (let i = 0; i < length; i++) {
+        for (let i = 0 ; i < length ; i++) {
             const index = Math.floor(Math.random() * characters.length)
             password += characters.charAt(index)
         }    

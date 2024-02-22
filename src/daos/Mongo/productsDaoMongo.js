@@ -4,48 +4,42 @@ class ProductDaoMongo {
     constructor(){
         this.model = prodModel
     }
-    validateId(id) {
-        if (!id || typeof id !== 'string') {
-            throw new Error('Formato invalido')
-        }
-    }
     
-    async getProducts(){
+    
+    async get(){
         try {
             return await this.model.find({})
         } catch (error) {
             console.log('Error al buscar productos' + error)
         }
     }
-    async getProduct(pid){
-        try {
-            this.validateId(pid)
-            return await this.model.findOne({ _id: pid })
+    async getBy(filter){
+        try {            
+            return await this.model.findOne(filter)
         } catch (error) {
             console.log('Error al buscar el id' + error)
             
         }
 
     }
-    async createProduct(product){
+    async create(product){
         try {            
             return await this.model.create(product)
         } catch (error) {
             console.log('Error en la creacion de producto' + error)            
         }       
     }
-    async updateProduct(pid, prodReplace){
-        try {
-            this.validateId(pid)            
+    async update(pid, prodReplace) {
+        try {           
             const productUpdate = await this.model.updateOne({ _id: pid }, prodReplace)
             return productUpdate
         } catch (error) {
-            console.error('Error al actualizar el producto', error)            
+            console.error('Error al actualizar el producto', error)
+            throw error 
         }
     }
-    async deleteProduct(pid){
-        try {
-            this.validateId(pid)
+    async remove(pid){
+        try {            
             const prodDelete = await this.model.deleteOne({ _id: pid })
             return prodDelete
         } catch (error) {
