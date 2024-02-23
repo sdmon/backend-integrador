@@ -1,8 +1,4 @@
-node_modules/
-.env.development
-.env.production
-src/routes/orders.router.js
-src/routes/operacioncompleja.js
-src/routes/prubas.router.js
-src/sessions/
-carts/
+/node_modules/
+/.env.development
+/.env.production
+/src/routes/operacioncompleja.js
