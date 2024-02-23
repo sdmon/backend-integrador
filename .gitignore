@@ -3,4 +3,7 @@ node_modules/
 src/routes/orders.router.js
 src/routes/operacioncompleja.js
 src/routes/prubas.router.js
-src/sessions
+src/sessions/
+.env.development
+.env.production
+carts/
