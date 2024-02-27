@@ -117,28 +117,28 @@ GET http://localhost:8080/api/carts/
 
 ### // POST para crear un carrito nuevo
 POST http://localhost:8080/api/carts
-// Id de carrito 65d7ae7b0b5aff44d2cc3bc1
+// Id de carrito 65d7b669e3b25f2ab0e65fbf
 
 ### // GET para ver todos los productos
 GET http://localhost:8080/api/products/
-// Id de producto 65d7ae7b0b5aff44d2cc3bc1
+// Id de producto 65d7b37494a3f303e530abd2
 
 
 ### // POST para agregar producto a carrito existente
-POST http://localhost:8080/api/carts/65d7ae7b0b5aff44d2cc3bc1/products/658dbdc6a58ca0a01668ec1c
+POST http://localhost:8080/api/carts/65d7b669e3b25f2ab0e65fbf/products/658dbdc6a58ca0a01668ec1c
 
 ### // GET para chequear estado del carrito
-GET http://localhost:8080/api/carts/65d7ae7b0b5aff44d2cc3bc1
+GET http://localhost:8080/api/carts/65d7b669e3b25f2ab0e65fbf
 
 ### // PUT para cambiar la cantidad del producto
-PUT http://localhost:8080/api/carts/65d7495c4d6e2a9e2779479f/products/658dbdc6a58ca0a01668ec1c
+PUT http://localhost:8080/api/carts/65d7b669e3b25f2ab0e65fbf/products/658dbdc6a58ca0a01668ec1c
 Content-Type: application/json
 
 {
-    "quantity": 9
+    "quantity": 5
 }
 ### // POST para realizar compra 
-POST http://localhost:8080/api/carts/65d7ae7b0b5aff44d2cc3bc1/purchase
+POST http://localhost:8080/api/carts/65d7b669e3b25f2ab0e65fbf/purchase
 
 ### // GET Para buscar la nueva disponibilidad del producto
 GET http://localhost:8080/api/products/658dbdc6a58ca0a01668ec1c
